@@ -1,0 +1,443 @@
+{
+  "source": "wri_raw",
+  "source_file": "data\\raw\\global_power_plant_database.csv",
+  "profiled_at_utc": "2026-10-02T04:02:57+00:00",
+  "row_count": 34936,
+  "column_count": 36,
+  "full_row_duplicates": 0,
+  "memory_mb": 41.59,
+  "columns": [
+    {
+      "column": "country",
+      "dtype": "str",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 167,
+      "top_values": {
+        "USA": 9833,
+        "CHN": 4235,
+        "GBR": 2751
+      }
+    },
+    {
+      "column": "country_long",
+      "dtype": "str",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 167,
+      "top_values": {
+        "United States of America": 9833,
+        "China": 4235,
+        "United Kingdom": 2751
+      }
+    },
+    {
+      "column": "name",
+      "dtype": "str",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 34528,
+      "top_values": {
+        "Santo Ant\u00f4nio": 6,
+        "Funil": 5,
+        "Santa Helena": 5
+      }
+    },
+    {
+      "column": "gppd_idnr",
+      "dtype": "str",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 34936,
+      "top_values": {
+        "GEODB0040538": 1,
+        "WKS0070144": 1,
+        "WKS0071196": 1
+      }
+    },
+    {
+      "column": "capacity_mw",
+      "dtype": "float64",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 5611,
+      "min": 1.0,
+      "max": 22500.0,
+      "mean": 163.3551,
+      "median": 16.745,
+      "std": 489.6361
+    },
+    {
+      "column": "latitude",
+      "dtype": "float64",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 31779,
+      "min": -77.847,
+      "max": 71.292,
+      "mean": 32.8166,
+      "median": 39.7278,
+      "std": 22.6386
+    },
+    {
+      "column": "longitude",
+      "dtype": "float64",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 33036,
+      "min": -179.9777,
+      "max": 179.3887,
+      "mean": -6.9728,
+      "median": -2.1271,
+      "std": 78.4059
+    },
+    {
+      "column": "primary_fuel",
+      "dtype": "str",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 15,
+      "top_values": {
+        "Solar": 10665,
+        "Hydro": 7156,
+        "Wind": 5344
+      }
+    },
+    {
+      "column": "other_fuel1",
+      "dtype": "str",
+      "null_count": 32992,
+      "null_pct": 94.44,
+      "unique_count": 12,
+      "top_values": {
+        "Oil": 1169,
+        "Gas": 383,
+        "Waste": 97
+      }
+    },
+    {
+      "column": "other_fuel2",
+      "dtype": "str",
+      "null_count": 34660,
+      "null_pct": 99.21,
+      "unique_count": 11,
+      "top_values": {
+        "Gas": 100,
+        "Oil": 66,
+        "Other": 35
+      }
+    },
+    {
+      "column": "other_fuel3",
+      "dtype": "str",
+      "null_count": 34844,
+      "null_pct": 99.74,
+      "unique_count": 8,
+      "top_values": {
+        "Gas": 31,
+        "Other": 20,
+        "Biomass": 13
+      }
+    },
+    {
+      "column": "commissioning_year",
+      "dtype": "float64",
+      "null_count": 17489,
+      "null_pct": 50.06,
+      "unique_count": 2023,
+      "min": 1896.0,
+      "max": 2020.0,
+      "mean": 1997.4148,
+      "median": 2007.0,
+      "std": 23.3978
+    },
+    {
+      "column": "owner",
+      "dtype": "str",
+      "null_count": 14068,
+      "null_pct": 40.27,
+      "unique_count": 10144,
+      "top_values": {
+        "Cypress Creek Renewables": 185,
+        "Lightsource Renewable Energy": 121,
+        "Sustainable Power Group  LLC": 93
+      }
+    },
+    {
+      "column": "source",
+      "dtype": "str",
+      "null_count": 15,
+      "null_pct": 0.04,
+      "unique_count": 866,
+      "top_values": {
+        "U.S. Energy Information Administration": 9789,
+        "Wiki-Solar": 3690,
+        "UK Renewable Energy Planning Database": 2582
+      }
+    },
+    {
+      "column": "url",
+      "dtype": "str",
+      "null_count": 18,
+      "null_pct": 0.05,
+      "unique_count": 4870,
+      "top_values": {
+        "http://www.eia.gov/electricity/data/browser/": 9789,
+        "https://www.wiki-solar.org": 3690,
+        "https://www.gov.uk/government/collections/renewable-energy-planning-data": 2582
+      }
+    },
+    {
+      "column": "geolocation_source",
+      "dtype": "str",
+      "null_count": 419,
+      "null_pct": 1.2,
+      "unique_count": 28,
+      "top_values": {
+        "U.S. Energy Information Administration": 9789,
+        "Wiki-Solar": 3690,
+        "WRI": 2869
+      }
+    },
+    {
+      "column": "wepp_id",
+      "dtype": "str",
+      "null_count": 18702,
+      "null_pct": 53.53,
+      "unique_count": 15263,
+      "top_values": {
+        "1082676": 14,
+        "1084787": 13,
+        "1105009": 10
+      }
+    },
+    {
+      "column": "year_of_capacity_data",
+      "dtype": "float64",
+      "null_count": 20049,
+      "null_pct": 57.39,
+      "unique_count": 11,
+      "min": 2000.0,
+      "max": 2019.0,
+      "mean": 2018.2188,
+      "median": 2019.0,
+      "std": 1.6064
+    },
+    {
+      "column": "generation_gwh_2013",
+      "dtype": "float64",
+      "null_count": 28519,
+      "null_pct": 81.63,
+      "unique_count": 5458,
+      "min": -947.6,
+      "max": 50834.0,
+      "mean": 592.6961,
+      "median": 23.426,
+      "std": 2174.8335
+    },
+    {
+      "column": "generation_gwh_2014",
+      "dtype": "float64",
+      "null_count": 27710,
+      "null_pct": 79.32,
+      "unique_count": 6159,
+      "min": -989.619,
+      "max": 32320.917,
+      "mean": 656.8639,
+      "median": 23.6085,
+      "std": 2231.4643
+    },
+    {
+      "column": "generation_gwh_2015",
+      "dtype": "float64",
+      "null_count": 26733,
+      "null_pct": 76.52,
+      "unique_count": 7037,
+      "min": -864.428,
+      "max": 37433.607,
+      "mean": 762.3688,
+      "median": 26.142,
+      "std": 2533.4598
+    },
+    {
+      "column": "generation_gwh_2016",
+      "dtype": "float64",
+      "null_count": 25792,
+      "null_pct": 73.83,
+      "unique_count": 7671,
+      "min": -768.62,
+      "max": 32377.477,
+      "mean": 693.1498,
+      "median": 22.4624,
+      "std": 2404.5168
+    },
+    {
+      "column": "generation_gwh_2017",
+      "dtype": "float64",
+      "null_count": 25436,
+      "null_pct": 72.81,
+      "unique_count": 7974,
+      "min": -934.944,
+      "max": 36448.643,
+      "mean": 661.8342,
+      "median": 17.8765,
+      "std": 2369.297
+    },
+    {
+      "column": "generation_gwh_2018",
+      "dtype": "float64",
+      "null_count": 25299,
+      "null_pct": 72.42,
+      "unique_count": 7946,
+      "min": -982.622,
+      "max": 35136.0,
+      "mean": 517.3208,
+      "median": 12.53,
+      "std": 1975.3027
+    },
+    {
+      "column": "generation_gwh_2019",
+      "dtype": "float64",
+      "null_count": 25277,
+      "null_pct": 72.35,
+      "unique_count": 8327,
+      "min": -780.339,
+      "max": 31920.368,
+      "mean": 423.9224,
+      "median": 11.53,
+      "std": 1698.5065
+    },
+    {
+      "column": "generation_data_source",
+      "dtype": "str",
+      "null_count": 23536,
+      "null_pct": 67.37,
+      "unique_count": 17,
+      "top_values": {
+        "U.S. Energy Information Administration": 9715,
+        "JRC-PPDB-OPEN": 509,
+        "Central Electricity Authority": 437
+      }
+    },
+    {
+      "column": "estimated_generation_gwh_2013",
+      "dtype": "float64",
+      "null_count": 18816,
+      "null_pct": 53.86,
+      "unique_count": 8845,
+      "min": 1.12,
+      "max": 48675.06,
+      "mean": 239.1122,
+      "median": 27.62,
+      "std": 1191.2582
+    },
+    {
+      "column": "estimated_generation_gwh_2014",
+      "dtype": "float64",
+      "null_count": 18433,
+      "null_pct": 52.76,
+      "unique_count": 9027,
+      "min": 0.87,
+      "max": 58470.77,
+      "mean": 242.4311,
+      "median": 28.25,
+      "std": 1285.7983
+    },
+    {
+      "column": "estimated_generation_gwh_2015",
+      "dtype": "float64",
+      "null_count": 17886,
+      "null_pct": 51.2,
+      "unique_count": 9113,
+      "min": 0.44,
+      "max": 57113.35,
+      "mean": 235.8661,
+      "median": 26.83,
+      "std": 1267.0052
+    },
+    {
+      "column": "estimated_generation_gwh_2016",
+      "dtype": "float64",
+      "null_count": 17366,
+      "null_pct": 49.71,
+      "unique_count": 9280,
+      "min": 0.3,
+      "max": 60859.73,
+      "mean": 235.6953,
+      "median": 27.555,
+      "std": 1259.5598
+    },
+    {
+      "column": "estimated_generation_gwh_2017",
+      "dtype": "float64",
+      "null_count": 1798,
+      "null_pct": 5.15,
+      "unique_count": 15023,
+      "min": 0.0,
+      "max": 82810.77,
+      "mean": 716.4434,
+      "median": 37.59,
+      "std": 2484.3612
+    },
+    {
+      "column": "estimated_generation_note_2013",
+      "dtype": "str",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 5,
+      "top_values": {
+        "NO-ESTIMATION": 18816,
+        "SOLAR-V1-NO-AGE": 7138,
+        "HYDRO-V1": 7108
+      }
+    },
+    {
+      "column": "estimated_generation_note_2014",
+      "dtype": "str",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 5,
+      "top_values": {
+        "NO-ESTIMATION": 18433,
+        "SOLAR-V1-NO-AGE": 7165,
+        "HYDRO-V1": 7109
+      }
+    },
+    {
+      "column": "estimated_generation_note_2015",
+      "dtype": "str",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 5,
+      "top_values": {
+        "NO-ESTIMATION": 17886,
+        "SOLAR-V1-NO-AGE": 7165,
+        "HYDRO-V1": 7109
+      }
+    },
+    {
+      "column": "estimated_generation_note_2016",
+      "dtype": "str",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 5,
+      "top_values": {
+        "NO-ESTIMATION": 17366,
+        "SOLAR-V1-NO-AGE": 7165,
+        "HYDRO-V1": 7104
+      }
+    },
+    {
+      "column": "estimated_generation_note_2017",
+      "dtype": "str",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 6,
+      "top_values": {
+        "CAPACITY-FACTOR-V1": 14942,
+        "SOLAR-V1-NO-AGE": 7165,
+        "HYDRO-V1": 7106
+      }
+    }
+  ]
+}
