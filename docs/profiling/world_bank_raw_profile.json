@@ -1,0 +1,137 @@
+{
+  "source": "world_bank_raw",
+  "source_file": "data\\raw\\world_bank_NY.GDP.MKTP.CD.json, data\\raw\\world_bank_NY.GDP.PCAP.CD.json, data\\raw\\world_bank_SP.POP.TOTL.json",
+  "profiled_at_utc": "2026-10-04T07:00:25+00:00",
+  "row_count": 795,
+  "column_count": 11,
+  "full_row_duplicates": 0,
+  "memory_mb": 0.41,
+  "columns": [
+    {
+      "column": "countryiso3code",
+      "dtype": "str",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 261,
+      "top_values": {
+        "": 15,
+        "AFE": 3,
+        "AFW": 3
+      }
+    },
+    {
+      "column": "date",
+      "dtype": "str",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 1,
+      "top_values": {
+        "2019": 795
+      }
+    },
+    {
+      "column": "value",
+      "dtype": "float64",
+      "null_count": 15,
+      "null_pct": 1.89,
+      "unique_count": 774,
+      "min": 234.3106,
+      "max": 88796498078977.7,
+      "mean": 935970766767.172,
+      "median": 10354823.5,
+      "std": 5707066374408.61
+    },
+    {
+      "column": "unit",
+      "dtype": "str",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 1,
+      "top_values": {
+        "": 795
+      }
+    },
+    {
+      "column": "obs_status",
+      "dtype": "str",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 1,
+      "top_values": {
+        "": 795
+      }
+    },
+    {
+      "column": "decimal",
+      "dtype": "int64",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 2,
+      "min": 0.0,
+      "max": 1.0,
+      "mean": 0.3333,
+      "median": 0.0,
+      "std": 0.4717
+    },
+    {
+      "column": "indicator_id",
+      "dtype": "str",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 3,
+      "top_values": {
+        "NY.GDP.MKTP.CD": 265,
+        "NY.GDP.PCAP.CD": 265,
+        "SP.POP.TOTL": 265
+      }
+    },
+    {
+      "column": "indicator_value",
+      "dtype": "str",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 3,
+      "top_values": {
+        "GDP (current US$)": 265,
+        "GDP per capita (current US$)": 265,
+        "Population, total": 265
+      }
+    },
+    {
+      "column": "country_id",
+      "dtype": "str",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 265,
+      "top_values": {
+        "ZH": 3,
+        "ZI": 3,
+        "1A": 3
+      }
+    },
+    {
+      "column": "country_value",
+      "dtype": "str",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 265,
+      "top_values": {
+        "Africa Eastern and Southern": 3,
+        "Africa Western and Central": 3,
+        "Arab World": 3
+      }
+    },
+    {
+      "column": "source_file",
+      "dtype": "str",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 3,
+      "top_values": {
+        "world_bank_NY.GDP.MKTP.CD.json": 265,
+        "world_bank_NY.GDP.PCAP.CD.json": 265,
+        "world_bank_SP.POP.TOTL.json": 265
+      }
+    }
+  ]
+}
