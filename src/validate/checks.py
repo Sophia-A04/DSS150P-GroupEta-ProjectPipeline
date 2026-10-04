@@ -188,3 +188,14 @@ def check_row_count_preserved(df, source, expected_rows: int, tolerance: float =
     return _make(source, "row_count", "row_count_preserved", int(bad),
                  f"row count {len(df)} differs from expected {expected_rows} by {diff} "
                  f"(tolerance {tolerance:.1%})", severity)
+
+
+def check_columns_absent(df, source, columns, severity="error"):
+    present = [c for c in columns if c in df.columns]
+    return _make(source, "schema", "forbidden_columns_absent", len(present),
+                 f"columns that must not exist: {present}", severity)
+
+
+def check_rule(source, name, failed_count, detail_if_failed,
+               check_type="business_rule", severity="error"):
+    return _make(source, check_type, name, failed_count, detail_if_failed, severity)
