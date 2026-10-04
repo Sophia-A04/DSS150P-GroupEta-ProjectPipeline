@@ -16,7 +16,7 @@ SOURCES = {
 }
 
 
-def run_source(key: str, path_override: str | None = None) -> dict:
+def run_source(key: str, path_override: str | None = None, write_profiles: bool = False) -> dict:
     module = importlib.import_module(SOURCES[key])
     if path_override:
         paths = [Path(path_override)]
@@ -31,9 +31,10 @@ def run_source(key: str, path_override: str | None = None) -> dict:
 
     logger.info("Loading %s from %s", key, [str(p) for p in paths])
     df = module.load(paths)
-    rel = lambda p: str(p.resolve().relative_to(PROJECT_ROOT)) if PROJECT_ROOT in p.resolve().parents else str(p)
-    profile = profile_dataframe(df, module.SOURCE_NAME, ", ".join(rel(p) for p in paths))
-    write_profile(profile, PROFILE_DIR)
+    if write_profiles:
+        rel = lambda p: str(p.resolve().relative_to(PROJECT_ROOT)) if PROJECT_ROOT in p.resolve().parents else str(p)
+        profile = profile_dataframe(df, module.SOURCE_NAME, ", ".join(rel(p) for p in paths))
+        write_profile(profile, PROFILE_DIR)
     return finalize_report(module.validate(df), module.SOURCE_NAME, raise_on_error=True)
 
 
@@ -41,6 +42,7 @@ def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description="Profile and validate raw sources.")
     parser.add_argument("--source", choices=[*SOURCES, "all"], default="all")
     parser.add_argument("--path", default=None, help="Override raw file path (single source only)")
+    parser.add_argument("--profile", action="store_true", help="Also rewrite files in docs/profiling")
     args = parser.parse_args(argv)
 
     configure_logging()
@@ -48,7 +50,7 @@ def main(argv=None) -> int:
     failed = []
     for key in keys:
         try:
-            run_source(key, args.path if len(keys) == 1 else None)
+            run_source(key, args.path if len(keys) == 1 else None, args.profile)
         except (FileNotFoundError, ValueError, ValidationError, ModuleNotFoundError) as exc:
             logger.error("Source '%s' did not pass: %s", key, exc)
             failed.append(key)

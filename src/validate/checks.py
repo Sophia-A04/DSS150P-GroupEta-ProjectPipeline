@@ -163,3 +163,28 @@ def check_contains_values(df, source, column, required_values, severity="error")
     missing = [str(v) for v in required_values if str(v) not in present]
     return _make(source, "business_rule", name, len(missing),
                  f"required values missing from {column}: {missing}", severity)
+
+
+def check_referential_integrity(child, parent, source, child_column, parent_column,
+                                allow_null=False, severity="error"):
+    name = f"{child_column}_in_{parent_column}"
+    if child_column not in child.columns or parent_column not in parent.columns:
+        return _make(source, "referential_integrity", name, 0, "", severity)
+    keys = set(parent[parent_column].dropna())
+    s = child[child_column]
+    orphan = ~s.isin(keys)
+    if allow_null:
+        orphan &= s.notna()
+    examples = sorted(map(str, s[orphan].dropna().unique()))[:10]
+    return _make(source, "referential_integrity", name, orphan.sum(),
+                 f"{int(orphan.sum())} rows in {child_column} have no match in parent "
+                 f"{parent_column}; examples: {examples}", severity)
+
+
+def check_row_count_preserved(df, source, expected_rows: int, tolerance: float = 0.0,
+                              severity="error"):
+    diff = abs(len(df) - expected_rows)
+    bad = diff > expected_rows * tolerance
+    return _make(source, "row_count", "row_count_preserved", int(bad),
+                 f"row count {len(df)} differs from expected {expected_rows} by {diff} "
+                 f"(tolerance {tolerance:.1%})", severity)
