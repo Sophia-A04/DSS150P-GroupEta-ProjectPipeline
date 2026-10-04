@@ -1,0 +1,23 @@
+# Extends the official Airflow image with our project's Python dependencies.
+# The project code itself is NOT copied here — it's mounted as a volume,
+# so changes to dags/ and src/ don't require a rebuild.
+
+FROM apache/airflow:2.9.3-python3.11
+
+# Switch to root temporarily to install system packages if needed
+USER root
+
+# Install system deps for psycopg2 compilation
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gcc \
+    libpq-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Back to the airflow user for pip installs (best practice)
+USER airflow
+
+# Install Python dependencies
+COPY requirements-airflow.txt /tmp/requirements-airflow.txt
+RUN pip install --no-cache-dir -r /tmp/requirements-airflow.txt
+
+# The DAGs and config are mounted via docker-compose at runtime

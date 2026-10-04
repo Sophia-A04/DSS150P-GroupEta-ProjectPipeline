@@ -93,3 +93,8 @@ Thumbs.db
 *.tmp
 *.temp
 *.log
+
+# Airflow
+logs/airflow/
+airflow.cfg.local
+*.pyc
