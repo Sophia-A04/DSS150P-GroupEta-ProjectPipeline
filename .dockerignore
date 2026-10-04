@@ -1,0 +1,13 @@
+.git
+.gitignore
+__pycache__
+*.pyc
+.venv
+venv
+.env
+data/raw/*
+data/staging/*
+data/curated/*
+logs/*
+outputs/*
+notebooks/*
