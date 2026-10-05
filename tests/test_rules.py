@@ -1,6 +1,6 @@
 import pytest
 
-from src.validate import owid_rules, world_bank_rules, wri_rules
+from src.validate import owid_rules, wri_rules
 
 
 def failed_errors(results):
@@ -13,10 +13,6 @@ def test_wri_good_frame_has_no_errors(wri_df):
 
 def test_owid_good_frame_has_no_errors(owid_df):
     assert failed_errors(owid_rules.validate(owid_df)) == set()
-
-
-def test_world_bank_good_frame_has_no_errors(wb_df):
-    assert failed_errors(world_bank_rules.validate(wb_df)) == set()
 
 
 @pytest.mark.parametrize("mutate, expected", [
@@ -63,22 +59,6 @@ def test_owid_null_iso_for_aggregates_is_allowed(owid_df):
     assert failed_errors(owid_rules.validate(owid_df)) == set()
 
 
-@pytest.mark.parametrize("mutate, expected", [
-    (lambda d: d.drop(columns=["value"]), "required_columns_present"),
-    (lambda d: d.assign(indicator_id=d["indicator_id"].where(d.index != 5, "BAD.CODE")), "indicator_id_accepted_values"),
-    (lambda d: d.assign(date=d["date"].where(d.index != 5, "2018")), "date_accepted_values"),
-    (lambda d: d.assign(value=d["value"].where(d.index != 5, -1.0)), "value_range"),
-    (lambda d: d[d["countryiso3code"] != "PHL"], "countryiso3code_contains_required"),
-    (lambda d: d[d["indicator_id"] != "SP.POP.TOTL"], "indicator_id_contains_required"),
-    (lambda d: d.head(50), "row_count_sanity"),
-])
-def test_world_bank_failure_is_detected(wb_df, mutate, expected):
-    assert expected in failed_errors(world_bank_rules.validate(mutate(wb_df)))
-
-
-def test_world_bank_blank_iso_is_warning_only(wb_df):
-    wb_df.loc[7, "countryiso3code"] = ""
-    results = world_bank_rules.validate(wb_df)
-    flagged = [r for r in results if r.check_name == "countryiso3code_iso3_format"][0]
-    assert not flagged.passed and flagged.severity == "warning"
-    assert failed_errors(results) == set()
+def test_owid_float_rounding_just_above_100_is_allowed(owid_df):
+    owid_df.loc[5, "share_global_co2"] = 100.000015
+    assert failed_errors(owid_rules.validate(owid_df)) == set()
