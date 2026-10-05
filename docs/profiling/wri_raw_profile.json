@@ -1,7 +1,7 @@
 {
   "source": "wri_raw",
-  "source_file": "data\\raw\\global_power_plant_database.csv",
-  "profiled_at_utc": "2026-10-02T04:02:57+00:00",
+  "source_file": "data\\raw\\wri\\global_power_plant_database.csv",
+  "profiled_at_utc": "2026-10-05T02:29:33+00:00",
   "row_count": 34936,
   "column_count": 36,
   "full_row_duplicates": 0,
