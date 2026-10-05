@@ -1,0 +1,28 @@
+{
+  "generated_at_utc": "2026-10-05T10:38:22+00:00",
+  "input": "data\\raw\\wri\\global_power_plant_database.csv",
+  "summary": {
+    "key": "country",
+    "partitions": 167,
+    "rows": 34936,
+    "largest": [
+      "USA",
+      9833
+    ],
+    "smallest": [
+      "DJI",
+      1
+    ]
+  },
+  "comparison": {
+    "full_scan_s": 0.2381,
+    "partition_read_s": 0.0351,
+    "rows_full_scan": 123,
+    "rows_partition_read": 123,
+    "fragments_read": 1,
+    "fragments_total": 167
+  },
+  "selected_values": [
+    "PHL"
+  ]
+}
