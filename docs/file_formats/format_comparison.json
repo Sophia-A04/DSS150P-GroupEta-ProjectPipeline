@@ -1,0 +1,39 @@
+{
+  "generated_at_utc": "2026-10-05T03:06:13+00:00",
+  "input": "data\\raw\\wri\\global_power_plant_database.csv",
+  "rows": 34936,
+  "columns": 36,
+  "repeats": 3,
+  "results": [
+    {
+      "format": "csv",
+      "size_mb": 11.345,
+      "write_s": 0.5241,
+      "read_all_s": 0.2763,
+      "read_subset_s": 0.099,
+      "rows_roundtrip": 34936,
+      "dtype_mismatches": 0,
+      "mismatched_columns": []
+    },
+    {
+      "format": "json",
+      "size_mb": 38.937,
+      "write_s": 0.3078,
+      "read_all_s": 0.5709,
+      "read_subset_s": 0.6544,
+      "rows_roundtrip": 34936,
+      "dtype_mismatches": 0,
+      "mismatched_columns": []
+    },
+    {
+      "format": "parquet",
+      "size_mb": 2.658,
+      "write_s": 0.1006,
+      "read_all_s": 0.0216,
+      "read_subset_s": 0.0105,
+      "rows_roundtrip": 34936,
+      "dtype_mismatches": 0,
+      "mismatched_columns": []
+    }
+  ]
+}
