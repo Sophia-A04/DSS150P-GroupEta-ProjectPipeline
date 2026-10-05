@@ -93,8 +93,10 @@ with DAG(
     # STAGE 5 — Curated validation (Iya)
     # ────────────────────────────────────────────────────────────
     validate_curated = BashOperator(
-        task_id="validate_curated",
-        bash_command='echo "[PLACEHOLDER] Curated validation will run here once Iya\'s data-quality checks are ready."',
+    task_id="validate_curated",
+    bash_command=f"cd {PROJECT_DIR} && python -m src.validate.integration_validation",
+    append_env=True,
+    retries=0,
     )
 
     # ────────────────────────────────────────────────────────────
