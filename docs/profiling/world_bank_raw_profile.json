@@ -1,11 +1,11 @@
 {
   "source": "world_bank_raw",
-  "source_file": "data\\raw\\world_bank\\gdp_per_capita.json, data\\raw\\world_bank\\population.json",
-  "profiled_at_utc": "2026-10-05T02:29:35+00:00",
-  "row_count": 34980,
+  "source_file": "data\\raw\\world_bank\\world_bank_gdp_current_usd.json, data\\raw\\world_bank\\world_bank_gdp_per_capita.json, data\\raw\\world_bank\\world_bank_population.json",
+  "profiled_at_utc": "2026-10-05T11:18:17+00:00",
+  "row_count": 795,
   "column_count": 12,
   "full_row_duplicates": 0,
-  "memory_mb": 17.96,
+  "memory_mb": 0.14,
   "columns": [
     {
       "column": "countryiso3code",
@@ -14,9 +14,9 @@
       "null_pct": 0.0,
       "unique_count": 261,
       "top_values": {
-        "": 660,
-        "AFE": 132,
-        "AFW": 132
+        "": 15,
+        "AFE": 3,
+        "AFW": 3
       }
     },
     {
@@ -24,24 +24,22 @@
       "dtype": "str",
       "null_count": 0,
       "null_pct": 0.0,
-      "unique_count": 66,
+      "unique_count": 1,
       "top_values": {
-        "2025": 530,
-        "2024": 530,
-        "2023": 530
+        "2019": 795
       }
     },
     {
       "column": "value",
       "dtype": "float64",
-      "null_count": 2841,
-      "null_pct": 8.12,
-      "unique_count": 31818,
-      "min": 11.8013,
-      "max": 8215424893.0,
-      "mean": 118916215.4753,
-      "median": 71023.0,
-      "std": 544022020.0694
+      "null_count": 15,
+      "null_pct": 1.89,
+      "unique_count": 774,
+      "min": 234.3106,
+      "max": 88796498078977.7,
+      "mean": 935970766767.172,
+      "median": 10354823.5,
+      "std": 5707066374408.61
     },
     {
       "column": "unit",
@@ -50,7 +48,7 @@
       "null_pct": 0.0,
       "unique_count": 1,
       "top_values": {
-        "": 34980
+        "": 795
       }
     },
     {
@@ -60,7 +58,7 @@
       "null_pct": 0.0,
       "unique_count": 1,
       "top_values": {
-        "": 34980
+        "": 795
       }
     },
     {
@@ -71,19 +69,20 @@
       "unique_count": 2,
       "min": 0.0,
       "max": 1.0,
-      "mean": 0.5,
-      "median": 0.5,
-      "std": 0.5
+      "mean": 0.3333,
+      "median": 0.0,
+      "std": 0.4717
     },
     {
       "column": "indicator_id",
       "dtype": "str",
       "null_count": 0,
       "null_pct": 0.0,
-      "unique_count": 2,
+      "unique_count": 3,
       "top_values": {
-        "NY.GDP.PCAP.CD": 17490,
-        "SP.POP.TOTL": 17490
+        "NY.GDP.MKTP.CD": 265,
+        "NY.GDP.PCAP.CD": 265,
+        "SP.POP.TOTL": 265
       }
     },
     {
@@ -91,10 +90,11 @@
       "dtype": "str",
       "null_count": 0,
       "null_pct": 0.0,
-      "unique_count": 2,
+      "unique_count": 3,
       "top_values": {
-        "GDP per capita (current US$)": 17490,
-        "Population, total": 17490
+        "GDP (current US$)": 265,
+        "GDP per capita (current US$)": 265,
+        "Population, total": 265
       }
     },
     {
@@ -104,9 +104,9 @@
       "null_pct": 0.0,
       "unique_count": 265,
       "top_values": {
-        "ZH": 132,
-        "ZI": 132,
-        "1A": 132
+        "ZH": 3,
+        "ZI": 3,
+        "1A": 3
       }
     },
     {
@@ -116,9 +116,9 @@
       "null_pct": 0.0,
       "unique_count": 265,
       "top_values": {
-        "Africa Eastern and Southern": 132,
-        "Africa Western and Central": 132,
-        "Arab World": 132
+        "Africa Eastern and Southern": 3,
+        "Africa Western and Central": 3,
+        "Arab World": 3
       }
     },
     {
@@ -126,10 +126,11 @@
       "dtype": "str",
       "null_count": 0,
       "null_pct": 0.0,
-      "unique_count": 2,
+      "unique_count": 3,
       "top_values": {
-        "gdp_per_capita.json": 17490,
-        "population.json": 17490
+        "world_bank_gdp_current_usd.json": 265,
+        "world_bank_gdp_per_capita.json": 265,
+        "world_bank_population.json": 265
       }
     },
     {
@@ -138,10 +139,10 @@
       "null_count": 0,
       "null_pct": 0.0,
       "unique_count": 1,
-      "min": 17490.0,
-      "max": 17490.0,
-      "mean": 17490.0,
-      "median": 17490.0,
+      "min": 265.0,
+      "max": 265.0,
+      "mean": 265.0,
+      "median": 265.0,
       "std": 0.0
     }
   ]
