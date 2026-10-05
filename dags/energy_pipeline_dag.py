@@ -62,11 +62,12 @@ with DAG(
 
     # ────────────────────────────────────────────────────────────
     # STAGE 2 — Raw validation (Iya)
-    # Placeholder — Iya's validation modules will replace this.
     # ────────────────────────────────────────────────────────────
     validate_raw = BashOperator(
         task_id="validate_raw",
-        bash_command='echo "[PLACEHOLDER] Raw validation will run here once Iya\'s validation modules are ready."',
+        bash_command=f"cd {PROJECT_DIR} && python -m src.validate.raw_validation --source all",
+        append_env=True,
+        retries=0,
     )
 
     # ────────────────────────────────────────────────────────────
