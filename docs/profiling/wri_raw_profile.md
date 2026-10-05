@@ -1,7 +1,7 @@
 # Raw Profile: wri_raw
 
-- Source file: `data\raw\global_power_plant_database.csv`
-- Profiled at (UTC): 2026-10-02T04:02:57+00:00
+- Source file: `data\raw\wri\global_power_plant_database.csv`
+- Profiled at (UTC): 2026-10-05T02:29:33+00:00
 - Rows: 34,936
 - Columns: 36
 - Fully duplicated rows: 0

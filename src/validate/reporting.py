@@ -31,8 +31,14 @@ def configure_logging(level=logging.INFO) -> None:
 
 
 def find_raw_files(suffix: str, keywords) -> List[Path]:
-    return sorted(p for p in RAW_DIR.rglob(f"*{suffix}")
-                  if any(k in p.name.lower() for k in keywords))
+    found = []
+    for p in RAW_DIR.rglob(f"*{suffix}"):
+        if p.name.lower().endswith(".meta.json"):
+            continue
+        rel = p.relative_to(RAW_DIR).as_posix().lower()
+        if any(k in rel for k in keywords):
+            found.append(p)
+    return sorted(found)
 
 
 def finalize_report(results: List[CheckResult], source: str,
