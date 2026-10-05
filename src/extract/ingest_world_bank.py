@@ -8,9 +8,12 @@ from .ingestion_utils import record_metadata
 logger = logging.getLogger(__name__)
 
 WORLD_BANK_BASE = "https://api.worldbank.org/v2"
+WB_YEAR = "2019"
+
 INDICATORS = {
     "gdp_per_capita": "NY.GDP.PCAP.CD",
     "population": "SP.POP.TOTL",
+    "gdp_current_usd": "NY.GDP.MKTP.CD",
 }
 
 def ingest_world_bank(raw_dir: Path, batch_id: str) -> bool:
@@ -22,9 +25,9 @@ def ingest_world_bank(raw_dir: Path, batch_id: str) -> bool:
     for name, indicator_code in INDICATORS.items():
         url = (
             f"{WORLD_BANK_BASE}/country/all/indicator/{indicator_code}"
-            f"?format=json&per_page=20000"
+            f"?format=json&per_page=20000&date={WB_YEAR}"
         )
-        dest = out_dir / f"{name}.json"
+        dest = out_dir / f"world_bank_{name}.json"
         logger.info("[world_bank] Fetching %s from %s", name, url)
 
         try:
@@ -32,7 +35,6 @@ def ingest_world_bank(raw_dir: Path, batch_id: str) -> bool:
             resp.raise_for_status()
             data = resp.json()
 
-            # Basic validation: World Bank returns a list of two elements
             if not isinstance(data, list) or len(data) < 2:
                 logger.error("[world_bank] Invalid response structure for %s", name)
                 overall_success = False
@@ -45,7 +47,8 @@ def ingest_world_bank(raw_dir: Path, batch_id: str) -> bool:
                 source_name=f"world_bank_{name}",
                 output_path=dest,
                 batch_id=batch_id,
-                extra={"indicator_code": indicator_code, "format": "json"},
+                extra={"indicator_code": indicator_code, "format": "json",
+                       "year": WB_YEAR},
             )
 
         except requests.exceptions.RequestException as e:
