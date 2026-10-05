@@ -75,9 +75,11 @@ with DAG(
     # Placeholder — Sophia's src.transform.clean_* modules will replace this.
     # ────────────────────────────────────────────────────────────
     transform_staging = BashOperator(
-        task_id="transform_staging",
-        bash_command='echo "[PLACEHOLDER] Staging transformation will run here once Sophia\'s transform modules are ready."',
-    )
+    task_id="transform_staging",
+    bash_command=f"cd {PROJECT_DIR} && python -m src.transform.run_staging",
+    append_env=True,
+    retries=1,
+)
 
     # ────────────────────────────────────────────────────────────
     # STAGE 4 — Curated transformation (Sophia)
