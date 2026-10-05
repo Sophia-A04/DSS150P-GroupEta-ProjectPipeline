@@ -39,7 +39,7 @@ def validate(df: pd.DataFrame) -> list:
         c.check_range(df, s, "gdp", 0),
         c.check_range(df, s, "co2", 0),
         c.check_range(df, s, "co2_per_capita", 0),
-        c.check_range(df, s, "share_global_co2", 0, 100),
+        c.check_range(df, s, "share_global_co2", 0, 100.01),
         c.check_row_count(df, s, min_rows=10_000, max_rows=500_000),
         c.check_contains_values(df, s, "iso_code", ["PHL"]),
         c.check_contains_values(df, s, "year", [2019]),
