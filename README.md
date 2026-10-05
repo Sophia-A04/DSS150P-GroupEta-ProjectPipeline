@@ -16,9 +16,9 @@ DSS150P — Fundamentals of Data Engineering
 
 ## Project Overview
 
-This project develops a data engineering pipeline for integrating global power plant data with national carbon emissions and economic indicators.
+This project develops a reproducible data engineering pipeline that integrates power plant, carbon-emissions, economic, and demographic data from multiple public sources.
 
-The project aims to support analysis of how national power-generation profiles and installed capacity relate to carbon emissions, economic activity, and energy-transition patterns.
+The project aims to support analysis of how national power-generation profiles and installed generation capacity relate to carbon emissions, economic activity, and energy-transition patterns.
 
 The project will eventually support country-level comparisons, clustering, and scenario-based analysis of alternative fuel-mix configurations.
 
@@ -26,18 +26,32 @@ The project will eventually support country-level comparisons, clustering, and s
 
 ## Data Sources
 
-The project currently uses data from:
+The project currently uses three approved data sources:
 
-1. Global Power Plant Database
-2. Our World in Data — CO2 and Greenhouse Gas Emissions
+1. **Global Power Plant Database (WRI)**
+   - Plant-level characteristics
+   - Installed generation capacity
+   - Primary fuel
+   - Geographic information
 
-These datasets are integrated using country-level identifiers and related attributes.
+2. **Our World in Data (OWID) CO₂ and Greenhouse Gas Emissions Dataset**
+   - National emissions indicators
+   - Carbon-related indicators
+   - 2019 country-level snapshot used for integration
+
+3. **World Bank Indicators REST API**
+   - GDP (current US$)
+   - Population, total
+   - GDP per capita (current US$)
+   - 2019 country-level indicators used for integration
+
+The three sources are integrated primarily through ISO-3 country codes.
 
 ---
 
-## Current Prototype Status
+## Reference Integration Prototype
 
-A validated merge prototype has been completed and is stored in:
+The validated three-source integration prototype is stored in:
 
 ```text
 notebooks/01_merge_prototype.ipynb
