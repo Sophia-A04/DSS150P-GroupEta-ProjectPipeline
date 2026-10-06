@@ -32,11 +32,16 @@ def load_staging_context():
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description="Validate the integrated plant-level dataset.")
     parser.add_argument("--path", default=None, help="Integrated dataset (csv or parquet)")
+    parser.add_argument("--skip-if-missing", action="store_true",
+                        help="Exit with code 99 (Airflow skip) when no dataset is found in data/curated")
     args = parser.parse_args(argv)
 
     configure_logging()
     try:
         path = Path(args.path) if args.path else find_curated()
+        if path is None and args.skip_if_missing:
+            logger.warning("No integrated dataset found in %s; skipping validation (exit code 99).", CURATED_DIR)
+            return 99
         if path is None or not path.exists():
             raise FileNotFoundError(f"No integrated dataset found (looked in {CURATED_DIR}); "
                                     f"pass --path to override.")
