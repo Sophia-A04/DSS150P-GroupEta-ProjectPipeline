@@ -16,43 +16,45 @@ DSS150P — Fundamentals of Data Engineering
 
 ## Project Overview
 
-This project develops a reproducible data engineering pipeline that integrates global power plant data with national carbon-emissions, economic, and demographic indicators.
+This project develops a reproducible data engineering pipeline that integrates global power-plant data with national carbon-emissions, economic, and demographic indicators.
 
-The project aims to support analysis of how national power-generation profiles and installed generation capacity relate to carbon emissions, economic activity, and energy-transition patterns.
+The project supports analysis of how national power-generation infrastructure and installed generation capacity relate to carbon emissions, economic activity, and energy-transition patterns.
 
-The project will eventually support country-level comparisons, clustering, and scenario-based analysis of alternative fuel-mix configurations.
+The integrated data foundation may also support later analytical extensions such as country-level comparisons, clustering, and scenario-based analysis. These analytical extensions are outside the core data-engineering pipeline unless implemented separately.
 
 ---
 
 ## Data Sources
 
-The project currently uses three approved data sources:
+The project uses three approved data sources.
 
 ### 1. Global Power Plant Database (WRI)
 
 Provides plant-level information including:
 
-- Power plant identifiers
-- Plant names
-- Country information
-- Installed generation capacity
-- Primary fuel
-- Geographic coordinates
-- Other available plant characteristics
+- power-plant identifiers
+- plant names
+- country information
+- installed generation capacity
+- primary fuel
+- geographic coordinates
+- commissioning information
+- generation-related fields where available
+- other plant characteristics available in the source
 
-### 2. Our World in Data (OWID) CO₂ and Greenhouse Gas Emissions Dataset
+### 2. Our World in Data (OWID) CO2 and Greenhouse Gas Emissions Dataset
 
 Provides national emissions and carbon-related indicators.
 
-The reference integration uses a 2019 country-level snapshot.
+The integration uses a 2019 country-level snapshot.
 
-OWID is treated as the primary source for emissions-related indicators used in the integrated dataset.
+OWID is treated as the project's primary source for emissions-related indicators used in the integrated dataset.
 
 ### 3. World Bank Indicators REST API
 
 Provides national economic and demographic indicators.
 
-The reference prototype uses 2019 values for:
+The project uses 2019 values for:
 
 - GDP (current US$)
 - Population, total
@@ -82,24 +84,26 @@ Country-level information from OWID and the World Bank is attached to individual
 
 Country-level installed-capacity features are calculated separately and then joined back to the plant-level dataset.
 
+The notebook remains a regression reference and is not the production transformation mechanism.
+
 ---
 
 ## Integration Rules
 
-The reference implementation follows these main integration rules:
+The implementation follows these main integration rules:
 
 - The Global Power Plant Database remains at plant-level grain.
 - `gppd_idnr` is treated as the plant identifier.
 - ISO-3 country codes are used for country-level integration.
 - OWID provides emissions and carbon-related indicators.
 - World Bank provides the selected economic and demographic indicators.
-- GDP and population fields available from OWID are not used as the primary economic and demographic measures in the final analytical merge.
-- Country-level enrichment tables should contain only one applicable record per ISO-3 code for the 2019 snapshot.
+- GDP and population fields from OWID are not used as the primary economic and demographic measures in the final integration.
+- Country-level enrichment tables contain no more than one applicable row per ISO-3 code for the 2019 snapshot.
 - Many-to-one relationships are expected when country-level data are joined to plant records.
-- Left joins are used to preserve legitimate power plant records.
-- Missing country-level indicators remain missing when no valid source match is available.
+- Left joins preserve legitimate power-plant records.
+- Missing country-level indicators remain missing when no valid source match exists.
 - Missing values are not automatically interpreted as zero.
-- World Bank aggregate or regional entities should not create artificial plant matches.
+- World Bank aggregate or regional entities must not create artificial plant matches.
 - Country-level installed-capacity features are joined back to plant-level records without changing the final analytical grain.
 
 Detailed integration assumptions are documented in:
@@ -108,9 +112,9 @@ Detailed integration assumptions are documented in:
 
 ---
 
-## Validated Prototype Characteristics
+## Validated Integrated Dataset Characteristics
 
-The current three-source reference output contains approximately:
+The validated three-source production output reproduces the reference plant-level characteristics:
 
 - 34,936 plant rows
 - 34,936 unique `gppd_idnr` values
@@ -119,28 +123,47 @@ The current three-source reference output contains approximately:
 - 34,927 OWID-matched plant rows
 - 34,886 World Bank-matched plant rows
 
-These values serve as regression references for later production-pipeline development.
+These values are used as regression references.
 
-They are not intended to be manually hard-coded into the final transformation pipeline.
+They are not manually hard-coded into the transformation pipeline.
 
 ---
 
-## Philippines Validation
+## Philippines Validation and Context Analysis
 
-The Philippines is retained in the three-source integrated dataset.
+The Philippines is retained throughout the three-source integrated dataset.
 
-The validated prototype contains approximately 123 Philippine plant records.
+The validated dataset contains:
+
+- 123 Philippine plant records
+- 20,719.30 MW total installed capacity
 
 Philippine plant records retain:
 
 - WRI plant-level information
 - OWID 2019 emissions indicators
 - World Bank 2019 economic and demographic indicators
-- Engineered installed-capacity features
+- engineered installed-capacity features
 
-The current Philippines checks are primarily integration-integrity checks.
+The final Philippine-context analysis includes:
 
-A more detailed Philippine-context analysis will be completed during a later project phase.
+- plant count
+- total installed capacity
+- average plant capacity
+- installed capacity by primary fuel
+- fossil and renewable installed-capacity shares
+- national emissions indicators
+- World Bank economic and demographic indicators
+- largest Philippine power plants represented in the dataset
+- Philippine share of installed capacity represented by the project database
+
+The reproducible analysis is available in:
+
+`sql/philippines_context.sql`
+
+Interpretation is documented in:
+
+`docs/analysis/philippines_context.md`
 
 ---
 
@@ -158,105 +181,178 @@ Generation fields such as `generation_gwh` represent actual electricity generati
 
 Therefore:
 
-- Installed-capacity shares are not equivalent to electricity-generation shares.
-- Missing generation values are not interpreted as zero generation.
-- Generation data are not required to preserve the plant-level analytical grain.
+- installed-capacity shares are not equivalent to electricity-generation shares
+- missing generation values are not interpreted as zero generation
+- generation data are not required to preserve the plant-level analytical grain
+- Philippine fuel-mix findings in this project are primarily based on installed capacity, not actual generation share
 
 ---
 
 ## Repository Structure
 
-The repository is organized into major data-engineering components:
+The repository is organized into the following major components:
 
 - `notebooks/` — exploratory and reference prototype notebooks
 - `data/raw/` — source-faithful ingested data
-- `data/staging/` — cleaned and standardized intermediate datasets
-- `data/curated/` — validated analytical datasets
+- `data/staging/` — cleaned and standardized source-specific datasets
+- `data/curated/` — validated integrated analytical datasets
 - `src/extract/` — automated source-ingestion components
 - `src/transform/` — production transformation and integration modules
 - `src/validate/` — reusable data-quality validation logic
-- `src/load/` — output and loading utilities
+- `src/load/` — partitioning and PostgreSQL-loading components
 - `dags/` — Apache Airflow DAG definitions
-- `sql/` — PostgreSQL schemas and queries
-- `tests/` — automated tests
+- `sql/` — PostgreSQL schemas and analytical queries
+- `tests/` — automated regression and component tests
 - `config/` — project configuration
-- `logs/` — pipeline execution logs
-- `docs/` — architecture, profiling, integration, and project documentation
-- `outputs/` — generated analytical outputs
+- `logs/` — generated execution logs
+- `docs/` — architecture, profiling, integration, analysis, and project documentation
+- `outputs/` — generated reports and analytical outputs
+
+Generated RAW, STAGING, CURATED, log, and output files are excluded from normal Git tracking where appropriate.
 
 ---
 
-## Data Layers
+## Data Architecture
 
-The production pipeline follows a layered architecture:
+The production pipeline follows the layered architecture:
 
-**RAW → STAGING → CURATED**
+**RAW → STAGING → CURATED → POSTGRESQL**
 
-### Raw Layer
+### RAW Layer
 
 Contains source-faithful data retrieved from the approved external sources.
 
-Raw data should remain as close as practical to the retrieved source representation.
+No analytical joins are performed in this layer.
 
-### Staging Layer
+### STAGING Layer
 
 Contains cleaned and standardized source-specific datasets prepared for integration.
 
-Typical staging operations may include:
+Typical staging operations include:
 
-- Type conversion
-- Column standardization
-- Year filtering
+- type conversion
+- string cleaning
 - ISO-code normalization
-- Source-specific cleaning
-- Removal of unnecessary fields
-- Preparation of one-record-per-country snapshots where required
+- year filtering
+- required-field handling
+- source-specific cleaning
+- removal of unnecessary or overlapping fields
+- creation of one-record-per-country snapshots where required
 
-### Curated Layer
+### CURATED Layer
 
-Contains validated analytical datasets created through integration of the staging-layer sources.
+Contains the validated plant-level analytical dataset created through integration of the staging-layer sources.
 
-The final integrated analytical dataset preserves the plant-level grain.
+The final curated analytical grain remains:
 
----
+**ONE ROW = ONE REAL POWER PLANT**
 
-## Current Development Status
+The principal curated dataset is:
 
-The repository currently contains working foundations or implementations for:
+`data/curated/eta_curated_2019.parquet`
 
-- Git-based collaborative development
-- Automated source ingestion
-- Raw data storage
-- Raw-source profiling
-- Automated data-quality validation
-- Staging validation rules
-- Integration validation rules
-- CSV, JSON, and Parquet format benchmarking
-- Docker environment foundation
-- PostgreSQL service foundation
-- Apache Airflow orchestration scaffold
-- Validated three-source reference integration notebook
-- Three-source integration rules and assumptions
+### PostgreSQL Layer
 
-The modular production transformation layer under `src/transform/` remains a major upcoming implementation stage.
+The wide curated analytical dataset is normalized into seven relational tables:
 
-The reference notebook will serve as the validated baseline when its transformation logic is converted into reusable Python modules.
+- `countries`
+- `fuel_types`
+- `power_plants`
+- `plant_generation`
+- `country_emissions`
+- `country_economic_indicators`
+- `country_fuel_capacity`
+
+This representation supports relational integrity, SQL retrieval, and structured analytical access.
 
 ---
 
-## Reproducibility Goal
+## Production Transformation Flow
 
-The final project is intended to recreate the analytical dataset from the approved source data without depending on a manually prepared final CSV.
-
-The intended production flow is:
+The implemented production flow is:
 
 **Source Ingestion → Raw Validation → Staging Transformation → Staging Validation → Curated Integration → Curated Validation → PostgreSQL Loading**
 
-The repository should contain the code, configuration, validation rules, environment definitions, and documentation required to reproduce the pipeline.
+Production transformation entrypoints include:
 
-Generated datasets are excluded from normal Git tracking where appropriate.
+`python -m src.transform.run_staging`
 
-The manually produced prototype output may be used as a regression reference, but the production pipeline should recreate the intended result directly from the approved sources.
+`python -m src.transform.run_curated`
+
+The PostgreSQL loading entrypoint is:
+
+`python -m src.load.postgres_data_loader`
+
+---
+
+## Transformation Layer
+
+Production transformations are implemented under:
+
+`src/transform/`
+
+The transformation layer includes:
+
+- WRI plant cleaning
+- OWID 2019 staging transformation
+- World Bank 2019 staging transformation
+- installed-capacity feature engineering
+- three-source integration
+- RAW → STAGING orchestration
+- STAGING → CURATED orchestration
+
+The reference notebook is no longer required to execute the production transformation pipeline.
+
+---
+
+## PostgreSQL Implementation
+
+The PostgreSQL implementation includes:
+
+- normalized schema definition
+- primary-key relationships
+- foreign-key relationships
+- bulk data loading
+- UPSERT behavior
+- repeatable loading
+- relationship-integrity verification
+- representative analytical queries
+
+The validated PostgreSQL load contains:
+
+| Table | Rows |
+|---|---:|
+| `countries` | 167 |
+| `fuel_types` | 15 |
+| `power_plants` | 34,936 |
+| `plant_generation` | 193,976 |
+| `country_emissions` | 164 |
+| `country_economic_indicators` | 162 |
+| `country_fuel_capacity` | 698 |
+
+The PostgreSQL loader was executed repeatedly with unchanged row counts, demonstrating idempotent loading.
+
+Relationship-integrity checks returned zero orphan rows for the implemented foreign-key relationships.
+
+---
+
+## Partitioning and File Formats
+
+The repository includes utilities for:
+
+- CSV, JSON, and Parquet format comparison
+- Hive-style Parquet partitioning by country
+- selective partition reads
+- file-pruning comparison
+- rerun-safe partition writes
+
+The current partitioning demonstration uses the WRI plant table and partitions records by ISO-3 country code.
+
+The partitioning utility can also be applied to compatible plant-level datasets containing the required partition key.
+
+Partitioning documentation is maintained under:
+
+`docs/file_formats/`
 
 ---
 
@@ -266,72 +362,99 @@ The project uses automated validation across multiple pipeline stages.
 
 Validation areas include:
 
-- Required-column checks
-- Data-type checks
-- Nullability checks
-- Uniqueness checks
-- Duplicate-row checks
+- required-column checks
+- data-type checks
+- nullability checks
+- uniqueness checks
+- duplicate-row checks
 - ISO-code format checks
-- Accepted-value checks
-- Numerical range checks
-- Row-count sanity checks
-- Referential-integrity checks
-- Plant-grain preservation
+- accepted-value checks
+- numerical-range checks
+- row-count sanity checks
+- referential-integrity checks
+- plant-grain preservation
 - Philippines-preservation checks
-- Source-match consistency checks
+- source-match consistency checks
 
 The validation framework is maintained under:
 
 `src/validate/`
 
----
-
-## Collaboration Workflow
-
-Development is performed through feature branches rather than directly on `main`.
-
-General workflow:
-
-1. Update local `main` from `origin/main`.
-2. Create a task-specific feature branch.
-3. Complete the assigned work.
-4. Review local changes.
-5. Create meaningful commits.
-6. Push the feature branch.
-7. Open a Pull Request targeting `main`.
-8. Review and test the Pull Request.
-9. Resolve conflicts or review comments where necessary.
-10. Merge approved work into `main`.
-
-The shared `main` branch represents the latest reviewed and accepted project state.
+Validation reports and logs are generated during execution where applicable.
 
 ---
 
-## Development Direction
+## Logging and Error Handling
 
-The project will continue by:
+Pipeline components use Python logging and explicit exception handling.
 
-- Converting reference notebook logic into reusable transformation modules
-- Completing RAW → STAGING → CURATED processing
-- Integrating transformation tasks into Airflow
-- Completing PostgreSQL loading and retrieval
-- Expanding automated testing
-- Implementing partitioning
-- Completing reproducibility and idempotency testing
-- Finalizing architecture and data-flow documentation
-- Conducting Philippine-context analysis
-- Performing final repository and documentation QA
+Examples include:
+
+- ingestion logging with UTC batch metadata
+- download and HTTP error handling
+- source-specific staging failure reporting
+- curated-transformation exception logging
+- validation PASS/WARN/FAIL reporting
+- PostgreSQL transaction rollback on load failure
+
+Generated runtime logs are stored outside normal Git history.
 
 ---
 
-## Current Reference Files
+## Secrets and Configuration
 
-Three-source integration prototype:
+Environment-specific credentials and secrets are not intended to be committed to the repository.
 
-`notebooks/01_merge_prototype.ipynb`
+The project includes:
 
-Integration assumptions and rules:
+`.env.example`
 
-`docs/integration/integration_rules.md`
+as a template for local configuration.
 
-The notebook is a validated reference implementation and should not be treated as the final production pipeline.
+The actual:
+
+`.env`
+
+file is excluded through `.gitignore`.
+
+The repository also excludes common credential, private-key, secret, and virtual-environment files.
+
+---
+
+## Docker Environment
+
+Docker Compose provides the reproducible service environment used by the project.
+
+The Docker environment supports:
+
+- PostgreSQL
+- Apache Airflow
+- pipeline execution containers
+- shared project data and output mounts
+
+The PostgreSQL schema and complete normalized load have been successfully executed inside the Dockerized environment.
+
+---
+
+## Apache Airflow Orchestration
+
+The intended Airflow task sequence is:
+
+```text
+start
+  ↓
+extract_all
+  ↓
+validate_raw
+  ↓
+transform_staging
+  ↓
+validate_staging
+  ↓
+transform_curated
+  ↓
+validate_curated
+  ↓
+load_postgres
+  ↓
+end
