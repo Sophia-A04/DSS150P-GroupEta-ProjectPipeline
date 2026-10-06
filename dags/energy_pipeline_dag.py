@@ -2,13 +2,13 @@
 Main DAG for the DSS150P Group Eta data engineering pipeline.
 
 Structure:
-    extract_all -> validate_raw -> transform_staging -> transform_curated
-                                                              |
-                                                              v
-                                                    validate_curated
-                                                              |
-                                                              v
-                                                      load_postgres
+    extract_all -> validate_raw -> transform_staging -> validate_staging -> transform_curated
+                                                                                  |
+                                                                                  v
+                                                                            validate_curated
+                                                                                  |
+                                                                                  v
+                                                                            load_postgres
 
 The task bodies currently call the ingestion orchestrator (already implemented).
 Later phases will replace the placeholder transformations with modular
@@ -37,7 +37,7 @@ PROJECT_DIR = Path("/opt/airflow/project")
 
 with DAG(
     dag_id="energy_pipeline",
-    description="End-to-end pipeline: ingestion -> validation -> transformation -> curated -> Postgres",
+    description="End-to-end pipeline: ingestion -> validation -> transformation -> staging_validation -> curated -> Postgres",
     default_args=default_args,
     start_date=datetime(2026, 10, 1),
     schedule="0 2 * * *",   # daily at 02:00 UTC
@@ -76,11 +76,23 @@ with DAG(
     # ────────────────────────────────────────────────────────────
     transform_staging = BashOperator(
         task_id="transform_staging",
-        bash_command='echo "[PLACEHOLDER] Staging transformation will run here once Sophia\'s transform modules are ready."',
+        bash_command=f"cd {PROJECT_DIR} && python -m src.transform.run_staging",
+        append_env=True,
+        retries=1,
     )
 
     # ────────────────────────────────────────────────────────────
-    # STAGE 4 — Curated transformation (Sophia)
+    # STAGE 4 — Staging validation (Iya)
+    # ────────────────────────────────────────────────────────────
+    validate_staging = BashOperator(
+        task_id="validate_staging",
+        bash_command=f"cd {PROJECT_DIR} && python -m src.validate.staging_validation",
+        append_env=True,
+        retries=0,
+    )
+
+    # ────────────────────────────────────────────────────────────
+    # STAGE 5 — Curated transformation (Sophia)
     # ────────────────────────────────────────────────────────────
     transform_curated = BashOperator(
         task_id="transform_curated",
@@ -88,15 +100,17 @@ with DAG(
     )
 
     # ────────────────────────────────────────────────────────────
-    # STAGE 5 — Curated validation (Iya)
+    # STAGE 6 — Curated validation (Iya)
     # ────────────────────────────────────────────────────────────
     validate_curated = BashOperator(
         task_id="validate_curated",
-        bash_command='echo "[PLACEHOLDER] Curated validation will run here once Iya\'s data-quality checks are ready."',
+        bash_command=f"cd {PROJECT_DIR} && python -m src.validate.integration_validation",
+        append_env=True,
+        retries=0,
     )
 
     # ────────────────────────────────────────────────────────────
-    # STAGE 6 — PostgreSQL load (Sophia)
+    # STAGE 7 — PostgreSQL load (Sophia)
     # ────────────────────────────────────────────────────────────
     load_postgres = BashOperator(
         task_id="load_postgres",
@@ -114,7 +128,8 @@ with DAG(
     start >> extract_all
     extract_all >> validate_raw
     validate_raw >> transform_staging
-    transform_staging >> transform_curated
+    transform_staging >> validate_staging
+    validate_staging >> transform_curated
     transform_curated >> validate_curated
     validate_curated >> load_postgres
     load_postgres >> end
