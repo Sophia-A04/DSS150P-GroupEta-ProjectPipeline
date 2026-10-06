@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS power_plants (
     other_fuel1 VARCHAR(50),
     other_fuel2 VARCHAR(50),
     other_fuel3 VARCHAR(50),
-    commissioning_year SMALLINT,
+    commissioning_year DOUBLE PRECISION,
     owner TEXT,
     source TEXT,
     source_url TEXT,
