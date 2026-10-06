@@ -20,7 +20,7 @@ This project develops a reproducible data engineering pipeline that integrates g
 
 The project supports analysis of how national power-generation infrastructure and installed generation capacity relate to carbon emissions, economic activity, and energy-transition patterns.
 
-The integrated data foundation may also support later analytical extensions such as country-level comparisons, clustering, and scenario-based analysis. These analytical extensions are outside the core data-engineering pipeline unless implemented separately.
+The integrated data foundation also supports a separate country-level analytical extension for clustering, Philippine benchmarking, exploratory modeling, and hypothetical installed-capacity transition scenarios. This analytical layer is implemented independently from the production data-engineering pipeline and uses the validated curated dataset as its input.
 
 ---
 
@@ -167,6 +167,111 @@ Interpretation is documented in:
 
 ---
 
+## Country-Level Clustering and Philippine Benchmarking
+
+The completed data-engineering pipeline also supports a separate country-level analytical extension available in:
+
+`notebooks/02_country_clustering_philippines_analysis.ipynb`
+
+The notebook transforms the validated plant-level curated dataset into a country-level analytical dataset with the grain:
+
+**ONE ROW = ONE COUNTRY**
+
+The analysis addresses the question:
+
+**Which countries have cleaner energy profiles and lower carbon emissions, and how does the Philippines compare with countries with similar energy and economic conditions?**
+
+### Analytical Approach
+
+The notebook includes:
+
+- country-level aggregation of installed-capacity, emissions, and economic indicators
+- K-Means clustering of countries using selected energy, carbon-intensity, and economic characteristics
+- elbow and silhouette analysis for cluster selection
+- cluster profiling and interpretation
+- identification of the Philippine cluster
+- comparison of the Philippines with potential cleaner installed-capacity benchmarks
+- exploratory regression modeling of emissions-related associations
+- hypothetical Philippine coal-to-renewable installed-capacity scenarios
+- presentation-ready analytical visualizations
+
+### Clustering Results
+
+The country-level dataset contains 167 countries.
+
+Of these, 152 countries had complete values for the selected clustering variables and were included in the final K-Means analysis. Fifteen countries were excluded because of missing clustering inputs.
+
+The final model uses:
+
+**K = 4 clusters**
+
+K = 4 produced the highest silhouette score among the tested solutions at approximately 0.323 and was also supported by the elbow pattern.
+
+The Philippines belongs to:
+
+**Cluster 4 — Coal-heavy / higher-carbon-intensity**
+
+This cluster contains 30 countries and has average installed-capacity shares of approximately:
+
+- 24.9% renewable
+- 69.1% fossil
+- 54.9% coal
+
+### Philippine Profile
+
+Within the analytical dataset, the Philippines has approximately:
+
+- 31.5% renewable installed capacity
+- 68.5% fossil installed capacity
+- 42.1% coal installed capacity
+- 1.29 tonnes of CO2 per capita
+- 0.145 CO2-per-GDP indicator
+
+The Philippine profile is not identical to the Cluster 4 average. The Philippines has a higher renewable share and lower coal share than the average country in its cluster.
+
+### Cleaner Installed-Capacity Benchmarks
+
+Using same-cluster membership, economic comparability, higher renewable share, lower fossil share, and lower coal share as transparent comparison criteria, the analysis identifies:
+
+- Morocco
+- Laos
+- Vietnam
+
+as potential cleaner installed-capacity benchmarks for the Philippines.
+
+These countries should be interpreted as comparative energy-transition references rather than models that the Philippines should directly copy.
+
+Importantly, none of these selected benchmarks has both lower CO2 per capita and lower CO2 per GDP than the Philippines. The comparison therefore highlights differences in **installed-capacity structure**, not proof that a cleaner installed-capacity mix automatically produces lower national emissions.
+
+### Philippine Capacity-Shift Scenarios
+
+The notebook also evaluates hypothetical changes to the Philippine installed-capacity mix by reallocating:
+
+- 5 percentage points
+- 10 percentage points
+- 20 percentage points
+
+from coal installed capacity toward renewable installed capacity while keeping total installed capacity constant.
+
+These scenarios illustrate changes in capacity composition only.
+
+They are not forecasts of actual electricity generation or causal estimates of future emissions reductions.
+
+### Analytical Limitations
+
+The analysis uses a cross-sectional 2019 snapshot and is exploratory rather than causal.
+
+Additional limitations include:
+
+- installed capacity is not equivalent to actual electricity generation
+- national CO2 indicators include economic activity beyond the electricity sector
+- countries differ in geography, resources, electricity demand, industrial structure, grid conditions, and policy
+- some countries were excluded from clustering because of missing analytical variables
+- K-Means produces exploratory distance-based groupings rather than definitive country classifications
+- predictive models show associations and should not be interpreted as causal emissions models
+
+---
+
 ## Important Terminology
 
 ### Installed Generation Capacity
@@ -192,7 +297,7 @@ Therefore:
 
 The repository is organized into the following major components:
 
-- `notebooks/` — exploratory and reference prototype notebooks
+- `notebooks/` — reference integration prototype and country-level analytical/modeling notebooks
 - `data/raw/` — source-faithful ingested data
 - `data/staging/` — cleaned and standardized source-specific datasets
 - `data/curated/` — validated integrated analytical datasets
