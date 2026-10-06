@@ -63,6 +63,7 @@ services:
       - ./data:/opt/airflow/project/data
       - ./logs:/opt/airflow/project/logs
       - ./outputs:/opt/airflow/project/outputs
+      - ./sql:/opt/airflow/project/sql:ro
     depends_on:
       postgres:
         condition: service_healthy
@@ -102,6 +103,7 @@ services:
       - ./data:/opt/airflow/project/data
       - ./logs:/opt/airflow/project/logs
       - ./outputs:/opt/airflow/project/outputs
+      - ./sql:/opt/airflow/project/sql:ro
     ports:
       - "8080:8080"
     depends_on:
@@ -139,6 +141,7 @@ services:
       - ./data:/opt/airflow/project/data
       - ./logs:/opt/airflow/project/logs
       - ./outputs:/opt/airflow/project/outputs
+      - ./sql:/opt/airflow/project/sql:ro
     depends_on:
       airflow-init:
         condition: service_completed_successfully
