@@ -10,9 +10,7 @@ Structure:
                                                                                   v
                                                                             load_postgres
 
-The task bodies currently call the ingestion orchestrator (already implemented).
-Later phases will replace the placeholder transformations with modular
-transformation modules (src.transform.*).
+The task bodies execute the modular Python scripts from the src/ directory.
 """
 from datetime import datetime, timedelta
 from pathlib import Path
@@ -72,7 +70,6 @@ with DAG(
 
     # ────────────────────────────────────────────────────────────
     # STAGE 3 — Staging transformation (Sophia)
-    # Placeholder — Sophia's src.transform.clean_* modules will replace this.
     # ────────────────────────────────────────────────────────────
     transform_staging = BashOperator(
         task_id="transform_staging",
@@ -96,7 +93,9 @@ with DAG(
     # ────────────────────────────────────────────────────────────
     transform_curated = BashOperator(
         task_id="transform_curated",
-        bash_command='echo "[PLACEHOLDER] Curated integration will run here once Sophia\'s three-source merge is modularized."',
+        bash_command=f"cd {PROJECT_DIR} && python -m src.transform.run_curated",
+        append_env=True,
+        retries=1,
     )
 
     # ────────────────────────────────────────────────────────────
@@ -114,7 +113,9 @@ with DAG(
     # ────────────────────────────────────────────────────────────
     load_postgres = BashOperator(
         task_id="load_postgres",
-        bash_command='echo "[PLACEHOLDER] Curated data will be loaded into Postgres once Sophia\'s schema is finalized."',
+        bash_command=f"cd {PROJECT_DIR} && python -m src.load.postgres_data_loader",
+        append_env=True,
+        retries=1,
     )
 
     # ────────────────────────────────────────────────────────────
