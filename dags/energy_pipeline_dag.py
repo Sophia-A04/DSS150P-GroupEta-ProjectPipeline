@@ -72,7 +72,6 @@ with DAG(
 
     # ────────────────────────────────────────────────────────────
     # STAGE 3 — Staging transformation (Sophia)
-    # Placeholder — Sophia's src.transform.clean_* modules will replace this.
     # ────────────────────────────────────────────────────────────
     transform_staging = BashOperator(
         task_id="transform_staging",
